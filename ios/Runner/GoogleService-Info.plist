@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>356474865681-4k0v03ls7vu4c00916h5807dp4t26kjk.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.356474865681-4k0v03ls7vu4c00916h5807dp4t26kjk</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>356474865681-4d6cu7cdvu7v6ufub6mcmn8iauggmf8h.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCkflh_DcoFLFTNgBkl0rdV51LwovRl5Hc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>356474865681</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.blackeco.blackeco</string>
+	<key>PROJECT_ID</key>
+	<string>blackeco-51dfd</string>
+	<key>STORAGE_BUCKET</key>
+	<string>blackeco-51dfd.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:356474865681:ios:f2d9257b2df63a78d189b0</string>
+	<key>DATABASE_URL</key>
+	<string>https://blackeco-51dfd.firebaseio.com</string>
+</dict>
+</plist>
