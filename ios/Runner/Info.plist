@@ -50,9 +50,9 @@
     	</dict>
     </array>
     <key>FacebookAppID</key>
-    <string>344100460051428</string>
+    <string>app-id</string>
     <key>FacebookClientToken</key>
-    <string>24640d2331cafb72da4373107f5d75c6</string>
+    <string>token</string>
     <key>FacebookDisplayName</key>
     <string>BlackEco</string>
     <key>LSApplicationQueriesSchemes</key>
