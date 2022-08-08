@@ -20,59 +20,48 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.blackeco.blackeco</string>
+				<string>fb344100460051428</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>344100460051428</string>
+	<key>FacebookClientToken</key>
+	<string>24640d2331cafb72da4373107f5d75c6</string>
+	<key>FacebookDisplayName</key>
+	<string>BlackEco</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>https</string>
-		<string>http</string>
+		<string>fbapi</string>
+		<string>fbapi20130214</string>
+		<string>fbapi20130410</string>
+		<string>fbapi20130702</string>
+		<string>fbapi20131010</string>
+		<string>fbapi20131219</string>
+		<string>fbapi20140410</string>
+		<string>fbapi20140116</string>
+		<string>fbapi20150313</string>
+		<string>fbapi20150629</string>
+		<string>fbapi20160328</string>
+		<string>fbauth</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-      <key>CFBundleTypeRole</key>
-      <string>Editor</string>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb344100460051428</string>
-        <string>com.googleusercontent.apps.356474865681-4k0v03ls7vu4c00916h5807dp4t26kjk</string>
-      </array>
-      </dict>
-    </array>
-    <!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
-    <!-- Google Sign-in Section -->
-    <key>CFBundleURLTypes</key>
-    <array>
-    	<dict>
-
-    	</dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>app-id</string>
-    <key>FacebookClientToken</key>
-    <string>token</string>
-    <key>FacebookDisplayName</key>
-    <string>BlackEco</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>fbapi</string>
-      <string>fbapi20130214</string>
-      <string>fbapi20130410</string>
-      <string>fbapi20130702</string>
-      <string>fbapi20131010</string>
-      <string>fbapi20131219</string>
-      <string>fbapi20140410</string>
-      <string>fbapi20140116</string>
-      <string>fbapi20150313</string>
-      <string>fbapi20150629</string>
-      <string>fbapi20160328</string>
-      <string>fbauth</string>
-      <string>fb-messenger-share-api</string>
-      <string>fbauth2</string>
-      <string>fbshareextension</string>
-    </array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -80,12 +69,22 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Explain why your app uses music</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Explain why your app uses photo library</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>For location of business</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>For location of business</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>For location of business</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Explain why your app uses photo library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Explain why your app uses photo library</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -93,8 +92,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

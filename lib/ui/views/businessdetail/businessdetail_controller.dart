@@ -21,6 +21,8 @@ class BusinessDetailController extends GetxController{
   UserModel user=Get.find<UserController>().currentUser.value;
   BusinessDetailController(this.businessData);
   late ReviewModel review;
+  DateTime? graphFirstDate;
+  String graphDateType='Last Week';
   int showView=0;
   bool showLinkView=false;
   int totalClicks=0;
@@ -37,15 +39,30 @@ class BusinessDetailController extends GetxController{
   }
 
   setReviews(){
-    review=ReviewModel(rating: 0);
-    review.photos=[];
+    loadingReview=true;
+    update();
+    review=businessData.reviews!.firstWhere((element) => user.id==element.userId,orElse: ()=>ReviewModel(rating: 0,photos: []));
     businessData.reviews!.forEach((element) {
       if(element.userId==user.id){
         review=element;
-        loadingReview=false;
+
       }
     });
+    loadingReview=false;
     reviews=businessData.reviews!.where((element) => user.id!=element.userId).toList();
+    update();
+  }
+
+  changeGraphDateType(String? val){
+    graphDateType=val!;
+    if(val=="Last Week"){
+      graphFirstDate=DateTime.now().subtract(Duration(days: 7));
+    }
+    else{
+      graphFirstDate=DateTime.now().subtract(Duration(days: 29));
+    }
+    setGraphData();
+    update();
   }
 
   changeLinkView(bool value){
@@ -93,14 +110,17 @@ class BusinessDetailController extends GetxController{
   }
 
   setGraphData()async{
+    totalClicks=0;
+    totalSocialClicks=0;
     List<TimeSeriesModel> newGraphData=await Get.find<FireBaseDatabaseService>().getAllClicks(businessData.id!);
     DateTime now=DateTime.now();
-    newGraphData=newGraphData.where((element) => element.time!.isAfter(now.subtract(Duration(days: 6))) && element.time!.isBefore(now)).toList();
+    newGraphData=newGraphData.where((element) => element.time!.isAfter(graphFirstDate!) && element.time!.isBefore(now)).toList();
     newGraphData.forEach((element) {
       totalClicks+=element.clicks!;
       totalSocialClicks+=element.socialClicks!;
     });
-    graphData=newGraphData.map((e) => {"time":"${DateFormat.E().format(e.time!)}","clicks":e.clicks,"socials":e.socialClicks}).toList();
+    newGraphData.sort((a,b)=>a.time!.compareTo(b.time!));
+    graphData=newGraphData.map((e) => {"time":"${graphDateType=="Last Week"?DateFormat.E().format(e.time!):DateFormat.MMMd().format(e.time!)}","clicks":e.clicks,"socials":e.socialClicks}).toList();
     update();
   }
 
@@ -108,6 +128,7 @@ class BusinessDetailController extends GetxController{
   void onInit() {
     listenToBusinessDataChange();
     setReviews();
+    graphFirstDate=DateTime.now().subtract(Duration(days: 6));
     Get.find<FireBaseDatabaseService>().addClick(businessData.id!, DateTime.now());
     if(Get.find<UserController>().currentUser.value.id==businessData.ownerId){
       isOwner=true;

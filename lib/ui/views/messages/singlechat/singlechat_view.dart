@@ -27,14 +27,19 @@ class SingleChatView extends StatelessWidget {
                 backgroundImage: controller.user!.imageUrl==null?AssetImage("assets/person.png") as ImageProvider:CachedNetworkImageProvider(controller.user!.imageUrl!),
               ),
               SizedBox(width: 10,),
-              AutoSizeText(controller.user!.name!,style: TextStyles.title1,)
+              AutoSizeText(controller.user!.name!,style: TextStyles.h2.copyWith(color: Theme.of(context).primaryColorDark),)
             ],):Row(children: [
               CircleAvatar(
                 backgroundImage: CachedNetworkImageProvider(controller.businessData!.coverImage!),
               ),
               SizedBox(width: 10,),
-              AutoSizeText(controller.businessData!.name!,style: TextStyles.title1,)
+              AutoSizeText(controller.businessData!.name!,style: TextStyles.h2.copyWith(color: Theme.of(context).primaryColorDark),)
             ],),
+            actions: [
+              IconButton(onPressed: (){
+                controller.showSettings(context);
+              },icon: Icon(Icons.more_horiz))
+            ],
           ),
           body: Padding(
             padding: EdgeInsets.only(bottom: Get.height*0.025,left: Get.width*0.05,right:Get.width*0.05),
@@ -93,7 +98,7 @@ class SingleChatView extends StatelessWidget {
                       ],)
                   ],);
                 })),
-                Row(children: [
+                controller.chatModel!.ids![controller.chattingWith]==true?Row(children: [
                   Flexible(child: TextField(
                     onChanged: (val){
                       controller.update();
@@ -109,7 +114,9 @@ class SingleChatView extends StatelessWidget {
                     controller.sendMessage();
                     FocusScope.of(context).requestFocus(FocusNode());
                   })
-                ],)
+                ],):TextButton(child: AutoSizeText("You have blocked this contact. Tap to unblock"),onPressed: (){
+                  controller.changeUserBlockStatus();
+                },)
               ],
             ),
           ),

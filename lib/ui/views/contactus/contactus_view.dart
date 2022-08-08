@@ -3,6 +3,7 @@ import 'package:blackeco/models/report_model.dart';
 import 'package:blackeco/ui/shared/styles.dart';
 import 'package:blackeco/ui/views/contactus/contactus_controller.dart';
 import 'package:blackeco/ui/views/contactus/report_view.dart';
+import 'package:blackeco/ui/views/contactus/ticketdetail/ticketdetail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -62,37 +63,42 @@ class ContactUsView extends StatelessWidget {
                     child: ListView.builder(
                         itemCount: controller.reports.length,
                         itemBuilder: (context,index){
-                      return Container(
-                        margin: EdgeInsets.only(bottom: Get.height*0.01),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                            color: Theme.of(context).accentColor,
-                        ),
+                      return GestureDetector(
+                        onTap: (){
+                          Get.to(()=>TicketDetailView(report: controller.reports[index]));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: Get.height*0.01),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                              color: Theme.of(context).accentColor,
+                          ),
 
-                      padding: EdgeInsets.all(Get.width*0.05),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                            AutoSizeText(controller.reports[index].issueType!,style: TextStyles.h1,),
-                            AutoSizeText("Pending")
-                          ],),
-                        SizedBox(height: 8,),
-                        AutoSizeText.rich(TextSpan(children: [
-                          TextSpan(text: "Ticket id ",style: TextStyles.title2.copyWith(color: Theme.of(context).hintColor)),
-                          TextSpan(text: "#"+controller.reports[index].id!,style: TextStyles.title2)
-                        ])),
+                        padding: EdgeInsets.all(Get.width*0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                              AutoSizeText(controller.reports[index].issueType!,style: TextStyles.h1,),
+                                controller.reports[index].closed!?AutoSizeText("Closed"):AutoSizeText(controller.reports[index].reportStatus==0?"Pending":"Responded")
+                              ],),
                           SizedBox(height: 8,),
                           AutoSizeText.rich(TextSpan(children: [
-                            TextSpan(text: "Date Submitted ",style: TextStyles.title2.copyWith(color: Theme.of(context).hintColor)),
-                            TextSpan(text: DateFormat.yMMMMd().format(controller.reports[index].date!),style: TextStyles.title2)
-                          ]))
-                      ],),);
+                            TextSpan(text: "Ticket id ",style: TextStyles.title2.copyWith(color: Theme.of(context).hintColor)),
+                            TextSpan(text: "#"+controller.reports[index].id!,style: TextStyles.title2)
+                          ])),
+                            SizedBox(height: 8,),
+                            AutoSizeText.rich(TextSpan(children: [
+                              TextSpan(text: "Date Submitted ",style: TextStyles.title2.copyWith(color: Theme.of(context).hintColor)),
+                              TextSpan(text: DateFormat.yMMMMd().format(controller.reports[index].date!),style: TextStyles.title2)
+                            ]))
+                        ],),),
+                      );
                     }),
                   )
-                  :AutoSizeText("you do not have submitted any ticket yet",textAlign: TextAlign.center,style: TextStyles.h2.copyWith(color: Theme.of(context).accentColor),)
+                  :AutoSizeText("No tickets have been submitted.",textAlign: TextAlign.center,style: TextStyles.h2.copyWith(color: Theme.of(context).accentColor),)
             ],
           ),
         );

@@ -144,6 +144,7 @@ class SingleComplainView extends StatelessWidget {
                     margin: EdgeInsets.all(Get.width*0.01),
                     elevation: 8,
                     child: ListView.builder(
+                      reverse:true,
                         itemCount: controller1.messages.length,
                         itemBuilder: (context,index){
                       return ReportMessage(message: controller1.messages[index], index: index);

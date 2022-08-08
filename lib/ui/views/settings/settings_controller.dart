@@ -1,7 +1,9 @@
 
 import 'dart:ui';
 
+import 'package:blackeco/core/controllers/user_controller.dart';
 import 'package:blackeco/core/services/localstorage_service.dart';
+import 'package:blackeco/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,10 @@ class SettingsController extends GetxController{
     update();
   }
 
+  updateUser(UserModel user){
+    Get.find<UserController>().updateUser(user);
+  }
+  
   changeTheme(){
     if(theme=="light"){
       Get.changeThemeMode(ThemeMode.light);

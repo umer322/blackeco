@@ -4,6 +4,7 @@ import 'package:blackeco/core/controllers/user_controller.dart';
 import 'package:blackeco/ui/shared/show.dart';
 import 'package:blackeco/ui/shared/styles.dart';
 import 'package:blackeco/ui/styled_widgets/drawer/drawer_controller.dart';
+import 'package:blackeco/ui/views/aboutus/aboutus_view.dart';
 import 'package:blackeco/ui/views/contactus/contactus_view.dart';
 import 'package:blackeco/ui/views/mybusiness/mybusinesses_view.dart';
 import 'package:blackeco/ui/views/settings/settings_view.dart';
@@ -54,7 +55,7 @@ class DrawerView extends StatelessWidget {
                         Get.to(()=>MyBusinessesView());
                       },
                       leading: Icon(Icons.business_center_outlined),
-                      title: AutoSizeText("My Business(s)"),
+                      title: AutoSizeText("My Business(es)"),
                     ):
                     ListTile(
                       onTap: (){
@@ -71,7 +72,9 @@ class DrawerView extends StatelessWidget {
                   }),
                   Divider(),
                   ListTile(
-                    onTap: (){},
+                    onTap: (){
+                      Get.to(()=>AboutUsView());
+                    },
                     leading: Icon(Icons.info_outline),
                     title: AutoSizeText.rich(TextSpan(
                         children: [

@@ -26,6 +26,6 @@ class ServicesBinder extends Bindings{
       Get.put(BusinessesController());
       Get.lazyPut(() => ReportsController());
       Get.lazyPut(() => MultiMediaService());
-      Get.lazyPut(() => NotificationService());
+      Get.put(NotificationService());
   }
 }

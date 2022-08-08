@@ -12,7 +12,8 @@ class AppThemes {
     canvasColor: Colors.white,
     appBarTheme: AppBarTheme(
       color: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black)
+        iconTheme: IconThemeData(color: Colors.black),
+        titleTextStyle: TextStyle(color: Colors.black)
     ),
     primaryColor: Color(0xfff8b633),
     accentColor: Colors.grey[300],
@@ -45,7 +46,8 @@ class AppThemes {
     canvasColor: Colors.black,
     appBarTheme: AppBarTheme(
         color: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white)
+        iconTheme: IconThemeData(color: Colors.white),
+      titleTextStyle: TextStyle(color: Colors.white)
     ),
     primaryColor: Color(0xfff8b633),
     accentColor: Colors.grey[400],
@@ -65,6 +67,15 @@ class AppThemes {
     buttonColor: Colors.green,
     textTheme: TextTheme(
       headline6: TextStyle(
+        color: Colors.white,
+      ),
+      headline5: TextStyle(
+        color: Colors.white,
+      ),
+      headline4: TextStyle(
+        color: Colors.white,
+      ),
+      headline3: TextStyle(
         color: Colors.white,
       ),
     ),

@@ -25,6 +25,7 @@ class SingleComplainController extends GetxController{
     reportMessagesSubscription=Get.find<FireStoreService>().reportMessages(report.id!).listen((event) {
       List<ReportMessageModel> reportMessages=event.docs.map((e) => ReportMessageModel.fromJson(e.data() as Map, e.id)).toList();
       messages.clear();
+      reportMessages.sort((a,b)=>b.time!.compareTo(a.time!));
       messages.addAll(reportMessages);
       update();
     });
@@ -56,6 +57,11 @@ class SingleComplainController extends GetxController{
   }
 
   changeReportStatus(){
+    if(report.claimType!){
+      if(report.businessAssigned==0){
+        report.businessAssigned=2;
+      }
+    }
     report.closed=!report.closed!;
     updateReport();
   }
@@ -74,6 +80,9 @@ class SingleComplainController extends GetxController{
         Get.back();
         try{
           await Get.find<FireStoreService>().updateBusinessId(report.businessId!,{"owner_id":report.userId});
+          report.businessAssigned=1;
+          report.reportStatus=1;
+          updateReport();
           Show.showSnackBar("Message", "Business has been assigned to this user",duration: 5);
         }
         catch(e){
@@ -85,6 +94,10 @@ class SingleComplainController extends GetxController{
 
   sendMessage()async{
     try{
+      if(report.reportStatus==0){
+        report.reportStatus=1;
+        updateReport();
+      }
       ReportMessageModel message=ReportMessageModel();
       if(kIsWeb){
         message.fromAdmin=true;

@@ -3,6 +3,7 @@ import 'package:blackeco/ui/shared/styles.dart';
 import 'package:blackeco/ui/styled_widgets/social_logins/social_logins.dart';
 import 'package:blackeco/ui/styled_widgets/styled_button.dart';
 import 'package:blackeco/ui/styled_widgets/styled_textformfield.dart';
+import 'package:blackeco/ui/views/forgotpassword/forgotpassword_view.dart';
 import 'package:blackeco/ui/views/login/login_controller.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -68,13 +69,12 @@ class LoginView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: Get.height*0.01,),
-                    Align(alignment: Alignment.centerRight,child: AutoSizeText.rich(TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Forgot Password?"
-                        ),
-                      ]
-                    )),),
+                    Align(alignment: Alignment.centerRight,child: TextButton(
+                      onPressed: (){
+                        Get.to(()=>ForgotPasswordView());
+                      },
+                      child: AutoSizeText("Forgot Password?"),
+                    ),),
                     SizedBox(height: Get.height*0.02,),
                     StyledButton(title: "Login"
                     ,onPressed: (){

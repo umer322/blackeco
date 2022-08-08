@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackeco/core/controllers/businesses_controller.dart';
+import 'package:blackeco/core/controllers/chat_controller.dart';
 import 'package:blackeco/core/controllers/user_controller.dart';
 import 'package:blackeco/core/services/firestore_service.dart';
 import 'package:blackeco/models/business_data.dart';
 import 'package:blackeco/models/chat.dart';
 import 'package:blackeco/models/user_model.dart';
 import 'package:blackeco/ui/shared/styles.dart';
+import 'package:blackeco/ui/styled_widgets/app_progress_indicator.dart';
 import 'package:blackeco/ui/styled_widgets/drawer/drawer_view.dart';
 import 'package:blackeco/ui/styled_widgets/loginerror_view.dart';
 import 'package:blackeco/ui/views/messages/messages_controller.dart';
@@ -68,7 +72,7 @@ class MessagesView extends StatelessWidget {
                         ],),
                       ),
                     ),
-                    Expanded(
+                    controller.loading?Center(child: AppProgressIndicator(),):Expanded(
                       child: ListView.builder(
                           itemCount: controller.chats.length,
                           itemBuilder: (context,index){
@@ -91,6 +95,11 @@ class ChatRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChatRowController>(
+      didChangeDependencies: (state){
+        if(model.lastUpdated!.compareTo(state.controller!.chatModel.lastUpdated!)>0){
+          state.controller!.update();
+        }
+      },
         global: false,
         init: ChatRowController(model),
         builder: (controller){
@@ -146,6 +155,20 @@ class ChatRowController extends GetxController{
   BusinessData? businessData;
   ChatModel chatModel;
   ChatRowController(this.chatModel);
+  int showView=0;
+  late StreamSubscription chatsSubscription;
+
+  listenToChat(){
+    chatsSubscription=Get.find<ChatController>().chats.listen((value) {
+      List<ChatModel> newChats=List.from(value);
+      newChats=newChats.where((element) => element.id==chatModel.id).toList();
+      if(newChats.length>0){
+        chatModel=newChats[0];
+      }
+      update();
+    });
+    update();
+  }
 
 
   setBusinessData(String id)async{
@@ -168,8 +191,14 @@ class ChatRowController extends GetxController{
     if(chatModel.forBusiness!){
       setBusinessData(chatModel.businessId!);
     }
+    listenToChat();
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    chatsSubscription.cancel();
+    super.onClose();
+  }
 }
 

@@ -8,11 +8,19 @@ class MessagesController extends GetxController{
   List<ChatModel> chats=[];
   int showView=0;
   late StreamSubscription chatsSubscription;
-
+  bool loading=true;
   listenToChat(){
-    chats=Get.find<ChatController>().chats;
-    chatsSubscription=Get.find<ChatController>().chats.listen((value) {
-      chats=value;
+    chats=Get.find<ChatController>().chats.reversed.toList();
+    chats.sort((a,b)=>b.lastUpdated!.compareTo(a.lastUpdated!));
+    loading=false;
+    chatsSubscription=Get.find<ChatController>().chats.listen((value)async{
+      loading=true;
+      update();
+      await Future.delayed(Duration(milliseconds: 300));
+      chats=List<ChatModel>.from(value).reversed.toList();
+      chats.sort((a,b)=>b.lastUpdated!.compareTo(a.lastUpdated!));
+      loading=false;
+      update();
     });
     update();
   }

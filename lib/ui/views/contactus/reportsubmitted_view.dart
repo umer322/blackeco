@@ -21,7 +21,7 @@ class ReportSubmittedView extends StatelessWidget {
           children: [
             AutoSizeText("We’ll get back to you soon!",style: TextStyles.h2.copyWith(color: Theme.of(context).primaryColor),textAlign: TextAlign.center,),
             SizedBox(height: Get.height*0.02,),
-            AutoSizeText("A ticket of id #$id has been created.\nYou can see the status of of your reported tickets in the Ticket center.",textAlign: TextAlign.center,)
+            AutoSizeText("Ticket ID #$id has been created.\nYou can see the status of your reported tickets in the Ticket center.",textAlign: TextAlign.center,)
           ],
         ),
       ),

@@ -102,7 +102,7 @@ class BusinessesController extends GetxService{
 
   addToFavorite(String businessId){
     try{
-     Get.find<FireStoreService>().addToFavorite(businessId, Get.find<UserController>().currentUser.value.id!);
+     Get.find<FireStoreService>().addFavorite(businessId, Get.find<UserController>().currentUser.value.id!);
     }
     catch(e){
       Show.showErrorSnackBar("Error", "$e");
@@ -111,7 +111,7 @@ class BusinessesController extends GetxService{
 
   removeFromFavorite(String businessId){
     try{
-      Get.find<FireStoreService>().removeFromFavorite(businessId, Get.find<UserController>().currentUser.value.id!);
+      Get.find<FireStoreService>().removeFavorite(businessId, Get.find<UserController>().currentUser.value.id!);
     }
     catch(e){
       Show.showErrorSnackBar("Error", "$e");

@@ -1,5 +1,7 @@
+import 'package:blackeco/core/controllers/user_controller.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class NotificationService extends GetxService{
   // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
@@ -32,6 +34,24 @@ class NotificationService extends GetxService{
         payload: 'item x');
   }
 
+  void handleSendNotification(String playerId,String title,String content,String chatId) async {
+    var notification = OSCreateNotification(
+        playerIds: [playerId],
+        content: content,
+        additionalData: {"chatId":chatId},
+        heading: title,
+        collapseId: playerId
+        );
+    await OneSignal.shared.postNotification(notification);
+  }
+
+  setOneSignalNotificationSettings()async{
+    OneSignal.shared.setLogLevel(OSLogLevel.error, OSLogLevel.none);
+    await OneSignal.shared.setAppId("8a0c8f0b-ccd8-4520-abd7-c1ff050650ba");
+    OneSignal.shared.promptUserForPushNotificationPermission().then((accepted)async{
+    });
+  }
+
   @override
   void onInit() {
     initializationSettingsIOS=IOSInitializationSettings(
@@ -40,6 +60,7 @@ class NotificationService extends GetxService{
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,);
     flutterLocalNotificationsPlugin.initialize(initializationSettings!,);
+    setOneSignalNotificationSettings();
     super.onInit();
   }
 }

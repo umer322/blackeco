@@ -16,8 +16,8 @@ import 'package:get/get.dart';
 
 class BusinessThumbnailView extends StatelessWidget {
   final BusinessData business;
-
-  BusinessThumbnailView(this.business);
+  final bool fromCategoryView;
+  BusinessThumbnailView(this.business,{this.fromCategoryView=false});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,9 +25,66 @@ class BusinessThumbnailView extends StatelessWidget {
         Get.to(()=>BusinessDetailView(business));
       },
       child: Container(
-        height: Get.width*0.75,
+        height: fromCategoryView?Get.width*0.5:Get.width*0.75,
         width: Get.width,
-        child: Column(
+        child: fromCategoryView?Row(children: [
+          Expanded(child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.all( Radius.circular(5)),
+                    child: CachedNetworkImage(imageUrl: business.coverImage!,fit: BoxFit.cover,)),
+                Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Get.find<UserController>().currentUser.value.id==business.ownerId?GestureDetector(
+                      onTap: (){
+                        Get.to(()=>AddBusinessViewOne(),binding: BindingsBuilder((){
+                          Get.put(AddBusinessController(businessData: business));
+                        }));
+                      },
+                      child: CircledIcon(Icons.edit,color: Colors.black54,iconColor: Colors.white,),
+                    ):GestureDetector(
+                        onTap: (){
+                          if(Get.find<UserController>().currentUser.value.id==null){
+                            Show.showErrorSnackBar("Error", "Please login to add this business to your favorites");
+                            return;
+                          }
+                          if(Get.find<UserController>().currentUser.value.favorites!.contains(business.id)){
+                            Get.find<BusinessesController>().removeFromFavorite(business.id!);
+                          }
+                          else{
+                            Get.find<BusinessesController>().addToFavorite(business.id!);
+                          }
+                        },
+                        child: CircledIcon(Get.find<UserController>().currentUser.value.favorites!.contains(business.id!)?Icons.favorite:Icons.favorite_border,color: Colors.black54,iconColor: Colors.white,)))
+              ]),flex: 3,),
+          Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(child: AutoSizeText(business.name!,style: TextStyles.h2,)),
+                    SizedBox(height: 5,),
+                    RatingBarIndicator(
+                      rating: business.rating!,
+                      itemBuilder: (context, index) => Icon(
+                        Icons.star,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      unratedColor: Theme.of(context).primaryColorLight,
+                      itemCount: 5,
+                      itemSize: 16.0,
+                      direction: Axis.horizontal,
+                    ),
+            SizedBox(height: 5,),
+            AutoSizeText(business.status!?"Open Now":"Closed",style: TextStyles.title2.copyWith(color: business.status!?Theme.of(context).buttonColor:Theme.of(context).errorColor))
+                  ],
+                ),
+              ))
+        ],):Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -53,14 +110,14 @@ class BusinessThumbnailView extends StatelessWidget {
                               Show.showErrorSnackBar("Error", "Please login to add this business to your favorites");
                               return;
                             }
-                            if(business.favorites!.contains(Get.find<UserController>().currentUser.value.id)){
+                            if(Get.find<UserController>().currentUser.value.favorites!.contains(business.id)){
                               Get.find<BusinessesController>().removeFromFavorite(business.id!);
                             }
                             else{
                               Get.find<BusinessesController>().addToFavorite(business.id!);
                             }
                           },
-                          child: CircledIcon(business.favorites!.contains(Get.find<UserController>().currentUser.value.id)?Icons.favorite:Icons.favorite_border,color: Colors.black54,iconColor: Colors.white,)))
+                          child: CircledIcon(Get.find<UserController>().currentUser.value.favorites!.contains(business.id!)?Icons.favorite:Icons.favorite_border,color: Colors.black54,iconColor: Colors.white,)))
                 ])),
             SizedBox(height: 8,),
             Padding(
@@ -97,7 +154,7 @@ class BusinessThumbnailView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(children: [
-                Flexible(child: AutoSizeText(business.tags!.join(","),style: TextStyles.body1.copyWith(color: Theme.of(context).accentColor),)),
+                Flexible(child: AutoSizeText(business.tags!.map((e) => e.capitalizeFirst).join(', '),style: TextStyles.body1.copyWith(color: Theme.of(context).accentColor),)),
                 SizedBox(width: Get.width*0.03,),
                 AutoSizeText(business.status!?"Open Now":"Closed",style: TextStyles.title2.copyWith(color: business.status!?Theme.of(context).buttonColor:Theme.of(context).errorColor),)
               ],),

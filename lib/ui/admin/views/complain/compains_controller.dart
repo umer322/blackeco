@@ -20,6 +20,7 @@ class ComplainsController extends GetxController{
 
   setReportsList(List<ReportModel> data){
     reports.clear();
+    data.sort((a,b)=>b.date!.compareTo(a.date!));
     reports=data;
     update();
   }

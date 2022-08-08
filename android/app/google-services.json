@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "356474865681",
+    "firebase_url": "https://blackeco-51dfd.firebaseio.com",
+    "project_id": "blackeco-51dfd",
+    "storage_bucket": "blackeco-51dfd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356474865681:android:991d2925a4cc496bd189b0",
+        "android_client_info": {
+          "package_name": "com.blackeco.black_eco"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356474865681-f92r0dq9gem301q9f12onc9sg7d02lg1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blackeco.black_eco",
+            "certificate_hash": "1b7cfb44a65fc7c7bb7f0042cc254ec4feb7890d"
+          }
+        },
+        {
+          "client_id": "356474865681-g19cmjdrdpnc7dltjalkt94oaq7aquo0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnggLoNsb7EPEdnCX2pF0yDO3rNvYZkMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356474865681-g19cmjdrdpnc7dltjalkt94oaq7aquo0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "356474865681-b8pt64jit1qfos58vhv581b7vj1va4cd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.blackeco.black-eco"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356474865681:android:608a05461f4dbaf0d189b0",
+        "android_client_info": {
+          "package_name": "com.blackeco.blackeco"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356474865681-4d6cu7cdvu7v6ufub6mcmn8iauggmf8h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blackeco.blackeco",
+            "certificate_hash": "1b7cfb44a65fc7c7bb7f0042cc254ec4feb7890d"
+          }
+        },
+        {
+          "client_id": "356474865681-g19cmjdrdpnc7dltjalkt94oaq7aquo0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnggLoNsb7EPEdnCX2pF0yDO3rNvYZkMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356474865681-g19cmjdrdpnc7dltjalkt94oaq7aquo0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "356474865681-b8pt64jit1qfos58vhv581b7vj1va4cd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.blackeco.black-eco"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

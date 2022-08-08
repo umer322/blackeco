@@ -6,6 +6,7 @@ class ReportModel{
   String? userPicture;
   String? issueType;
   int? reportStatus;
+  int? businessAssigned;
   bool? closed;
   String? additionalNote;
   String? fileUrl;
@@ -13,12 +14,13 @@ class ReportModel{
   bool? claimType;
   String? businessId;
 
-  ReportModel({this.claimType,this.closed,this.issueType,this.date,this.id,this.userId,this.additionalNote,this.contactEmail,this.fileUrl,this.reportStatus,this.userPicture,this.userName,this.businessId});
+  ReportModel({this.claimType,this.closed,this.businessAssigned,this.issueType,this.date,this.id,this.userId,this.additionalNote,this.contactEmail,this.fileUrl,this.reportStatus,this.userPicture,this.userName,this.businessId});
   ReportModel.fromJson(Map data,String id):
       id=id,
       userId=data['user_id'],
       userName=data['user_name'],
       userPicture=data['user_picture'],
+      businessAssigned=data['business_assigned']??0,
       contactEmail=data['contact_email'],
       issueType=data['issue_type'],
       additionalNote=data['additional_note'],
@@ -37,6 +39,7 @@ class ReportModel{
       'user_name':userName,
       'user_picture':userPicture,
       "additional_note":additionalNote,
+      'business_assigned':businessAssigned??0,
       "file_url":fileUrl,
       "date":date?.toString(),
       'report_status':reportStatus,
@@ -46,8 +49,8 @@ class ReportModel{
     };
   }
 
-  static List<String> reportProblemsIssues=['Login/Signup Issue','Other Issue'];
-  static List<String> allReportIssues=['All','Login/Signup Issue','Business Complain','Claim Business','Other Issue'];
-  static List<String> adminReportTypes=['All','Login/Signup Issue','Business Complain','Other Issue'];
+  static List<String> reportProblemsIssues=['Login/Signup Issue','Business Complaint','Other Issue'];
+  static List<String> allReportIssues=['All','Login/Signup Issue','Business Complaint','Claim Business','Other Issue'];
+  static List<String> adminReportTypes=['All','Login/Signup Issue','Business Complaint','Other Issue'];
 
 }

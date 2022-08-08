@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blackeco/ui/styled_widgets/styled_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 
@@ -16,32 +17,13 @@ class AddBusinessWait extends StatelessWidget {
         children: [
           AutoSizeText("Please Wait",style: TextStyle(color: Theme.of(context).primaryColor),presetFontSizes: [20,18,16],),
           SizedBox(height: 15,),
-          AutoSizeText("We are ${updating?"Updating":"creating"} your business listing.\n It will be live in short time.",maxLines: 2,presetFontSizes: [16,14],textAlign: TextAlign.center,),
+          AutoSizeText("We are ${updating?"updating":"creating"} your business listing.\n It will be live shortly!.",maxLines: 2,presetFontSizes: [16,14],textAlign: TextAlign.center,),
           SizedBox(height: 15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 15,
-                width: 15,
-                decoration: BoxDecoration(shape: BoxShape.circle,
-                    color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(width: 5,),
-              Container(
-                height: 35,
-                width: 35,
-                decoration: BoxDecoration(shape: BoxShape.circle,
-                    color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(width: 5,),
-              Container(
-                height: 15,
-                width: 15,
-                decoration: BoxDecoration(shape: BoxShape.circle,
-                    color: Theme.of(context).primaryColor),
-              )
+              SpinKitThreeBounce(color: Theme.of(context).primaryColor,)
             ],),
           SizedBox(height: 15,),
           Container(

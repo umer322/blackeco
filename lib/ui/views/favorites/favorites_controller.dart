@@ -23,6 +23,7 @@ class FavoritesController extends GetxController{
 
 
  setGroups(){
+   tags.clear();
    favorites.forEach((element) {
      tags.add(element.category!);
    });
@@ -31,11 +32,17 @@ class FavoritesController extends GetxController{
 
 
  listenToBusinessDataChange(){
-   favorites=Get.find<BusinessesController>().businesses.where((e) => e.favorites!.contains(Get.find<UserController>().currentUser.value.id)).toList();
-   businessDataSubscription=Get.find<BusinessesController>().businesses.listen((data) {
-     favorites=data.where((element) => element.favorites!.contains(Get.find<UserController>().currentUser.value.id)).toList();
-     update();
+
+   setFavorites(Get.find<UserController>().currentUser.value.favorites!, Get.find<BusinessesController>().businesses);
+   businessDataSubscription=Get.find<UserController>().currentUser.listen((data) {
+     setFavorites(data.favorites??[],  Get.find<BusinessesController>().businesses);
    });
+ }
+
+ setFavorites(List<String> favoritesList,List<BusinessData> businesses){
+   favorites=favoritesList.map((e) => businesses.firstWhere((element) => element.id==e)).toList();
+   setGroups();
+   update();
  }
 
  @override

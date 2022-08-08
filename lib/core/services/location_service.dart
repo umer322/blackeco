@@ -10,10 +10,10 @@ class LocationService extends GetxService{
   Future<LocationModel?> getLocation()async {
 
     LocationResult? result = await Get.to(
-            PlacePicker("api-key"));
+            PlacePicker("AIzaSyBP2fP-UWcjp6QcM9dE2DeB96tlAJXgeRE"));
 
     if(result!=null){
-      LocationModel location=LocationModel(name: result.name,city: result.administrativeAreaLevel2!.name,state:result.administrativeAreaLevel1!.name,formattedAddress: result.formattedAddress,locality: result.locality,country:result.country!.name,postCode: result.postalCode,latitude:result.latLng!.latitude,longitude: result.latLng!.longitude  );
+      LocationModel location=LocationModel(name: result.name,city: result.city!.name,state:result.administrativeAreaLevel1!.name,formattedAddress: result.formattedAddress,locality: result.locality,country:result.country!.name,postCode: result.postalCode,latitude:result.latLng!.latitude,longitude: result.latLng!.longitude  );
       return location;
     }
     else{

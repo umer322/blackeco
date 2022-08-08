@@ -64,7 +64,7 @@ class ProfileView extends StatelessWidget {
                     Get.to(()=>MyBusinessesView());
                   },
                   leading: Icon(Icons.business_center_outlined),
-                  title: AutoSizeText("My Business(s)"),
+                  title: AutoSizeText("My Business(es)"),
                 ):
                 ListTile(
                   onTap: (){
@@ -79,12 +79,12 @@ class ProfileView extends StatelessWidget {
                   title: AutoSizeText("Add a Business"),
                 );
               }),
-              Obx((){
-                return Get.find<UserController>().currentUser.value.id==null?SizedBox():ListTile(
-                  leading: Icon(Icons.shopping_bag),
-                  title: AutoSizeText("My Impact"),
-                );
-              }),
+              // Obx((){
+              //   return Get.find<UserController>().currentUser.value.id==null?SizedBox():ListTile(
+              //     leading: Icon(Icons.shopping_bag),
+              //     title: AutoSizeText("My Impact"),
+              //   );
+              // }),
               Obx((){
                 return Get.find<UserController>().currentUser.value.id==null?SizedBox():ListTile(
                   onTap: (){
@@ -103,8 +103,20 @@ class ProfileView extends StatelessWidget {
                         Get.back();
                       },child: Text("No",style: TextStyle(color: Theme.of(context).primaryColorLight),),
                       ),confirm: ElevatedButton(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor)),onPressed: ()async{
-                        await Get.find<UserController>().signOut();
                         Get.back();
+                        Show.showLoader();
+                        try{
+                          await Get.find<UserController>().signOut();
+                          if(Get.isOverlaysOpen){
+                            Get.back();
+                          }
+                        }
+                        catch(e){
+                          if(Get.isOverlaysOpen){
+                            Get.back();
+                          }
+                          Show.showErrorSnackBar("Error", "$e");
+                        }
                       },child: Text("Yes",style: TextStyle(color:Theme.of(context).primaryColorLight),),
                       ),);
                   },

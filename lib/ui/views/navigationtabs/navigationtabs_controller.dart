@@ -16,6 +16,11 @@ class NavigationTabsController extends GetxController{
   ];
 
   Future<bool> onPop(BuildContext context)async{
+    if(index!=0){
+      index=0;
+      update();
+      return false;
+    }
     bool value=await Get.defaultDialog(
       title: "Leave App",
       middleText: "Are you sure you want to leave this app?",

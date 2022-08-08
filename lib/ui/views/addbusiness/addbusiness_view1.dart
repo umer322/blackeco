@@ -63,7 +63,7 @@ class AddBusinessViewOne extends StatelessWidget {
                         children: [
                           Icon(Icons.add_photo_alternate,size: 40,color: Colors.grey,),
                           SizedBox(height: Get.height*0.01,),
-                          AutoSizeText("Add Cover Photo",style: TextStyles.body1.copyWith(color: Colors.grey),)
+                          AutoSizeText("Add Cover Photo\n(480px*240px)",style: TextStyles.body1.copyWith(color: Colors.grey),)
                         ],
                       ),
                     ),
@@ -89,12 +89,14 @@ class AddBusinessViewOne extends StatelessWidget {
                   SizedBox(height: Get.height*0.01,),
                   Row(children: [
                     CountryCodePicker(
+                      favorite: ["+1"],
                     onChanged: (CountryCode code){
                         controller.businessData!.countryCode=code.dialCode;
                         controller.update();
                     },
+                      dialogBackgroundColor: Get.isDarkMode?Colors.black:Colors.white,
                       showFlagMain: true,
-                    initialSelection: controller.businessData!.countryCode,
+                    initialSelection: controller.businessData!.countryCode??"+1",
                   ),
                     Flexible(
                       child: TextFormField(
@@ -192,6 +194,7 @@ class AddBusinessViewOne extends StatelessWidget {
                     onSaved: (val){
                       controller.businessData!.history=val;
                     },
+                    maxLines: null,
                     decoration: InputDecoration(
                         hintText: "Business History"
                     ),

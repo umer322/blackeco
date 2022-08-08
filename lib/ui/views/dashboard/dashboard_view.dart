@@ -10,6 +10,7 @@ import 'package:blackeco/ui/styled_widgets/circled_icon.dart';
 import 'package:blackeco/ui/styled_widgets/drawer/drawer_view.dart';
 import 'package:blackeco/ui/views/addbusiness/addbusiness_controller.dart';
 import 'package:blackeco/ui/views/addbusiness/addbusiness_view1.dart';
+import 'package:blackeco/ui/views/addbusiness/addbusiness_wait.dart';
 import 'package:blackeco/ui/views/businessdetail/businessdetail_view.dart';
 import 'package:blackeco/ui/views/categories/categories_view.dart';
 import 'package:blackeco/ui/views/categories/singlecategory_view.dart';
@@ -19,6 +20,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 
 class DashboardView extends StatelessWidget {
@@ -177,14 +179,15 @@ class _BusinessListPortion extends StatelessWidget {
           ),
         ),
         Container(
-          height: Get.width*0.7,
+          height: Get.width*0.75,
           child: data.length==0?Center(child: AutoSizeText(message,style: TextStyles.h2,),):ListView.builder(
+              padding: EdgeInsets.only(bottom: 20),
               itemCount: data.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (_,index){
             return _BusinessDetailPortion(data[index]);
           }),
-        )
+        ),
       ],
     );
   }
@@ -197,6 +200,7 @@ class _BusinessDetailPortion extends StatelessWidget {
   _BusinessDetailPortion(this.business);
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: (){
         Get.to(()=>BusinessDetailView(business));
@@ -216,7 +220,7 @@ class _BusinessDetailPortion extends StatelessWidget {
                 ClipRRect(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5)),
                     child: CachedNetworkImage(imageUrl: business.coverImage!,fit: BoxFit.cover,)),
-                    Positioned(
+                    Obx(()=>Positioned(
                         top: 10,
                         right: 10,
                         child: Get.find<UserController>().currentUser.value.id==business.ownerId?GestureDetector(
@@ -232,21 +236,21 @@ class _BusinessDetailPortion extends StatelessWidget {
                                 Show.showErrorSnackBar("Error", "Please login to add this business to your favorites");
                                 return;
                               }
-                              if(business.favorites!.contains(Get.find<UserController>().currentUser.value.id)){
+                              if(Get.find<UserController>().currentUser.value.favorites!.contains(business.id)){
                                 Get.find<BusinessesController>().removeFromFavorite(business.id!);
                               }
                               else{
                                 Get.find<BusinessesController>().addToFavorite(business.id!);
                               }
                             },
-                            child: CircledIcon(business.favorites!.contains(Get.find<UserController>().currentUser.value.id)?Icons.favorite:Icons.favorite_border,color: Colors.black54,iconColor: Colors.white,)))
-              ])),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: Get.width*0.02,vertical: Get.height*0.005),
-                child: Row(
-                  children: [
-                  Expanded(
-                    child: Row(children: [Flexible(child: AutoSizeText(business.name!,style: TextStyles.h2,)),
+                            child: CircledIcon(Get.find<UserController>().currentUser.value.favorites!.contains(business.id!)?Icons.favorite:Icons.favorite_border,color: Colors.black54,iconColor: Colors.white,))))
+                          ])),
+                           Padding(
+                          padding: EdgeInsets.symmetric(horizontal: Get.width*0.02,vertical: Get.height*0.005),
+                           child: Row(
+                            children: [
+                         Expanded(
+                        child: Row(children: [Flexible(child: AutoSizeText(business.name!,style: TextStyles.h2,)),
                       SizedBox(width: 5,),
                       RatingBarIndicator(
                         rating: business.rating!,
@@ -260,26 +264,39 @@ class _BusinessDetailPortion extends StatelessWidget {
                         direction: Axis.horizontal,
                       ),],),
                   ),
-                  GestureDetector(
-                      onTap: (){
-                        try{
-                          Get.find<LocalStorageService>().launchURL('https://www.google.com/maps/search/?api=1&query=${business.location?.latitude},${business.location?.longitude}');
-                        }
-                        catch(e){
-                          Show.showErrorSnackBar("Error", "$e");
-                        }
-                      },
-                      child: CircledIcon(Icons.location_on_outlined,iconColor: Theme.of(context).primaryColorLight,)),
+
                 ],),
               ),
-              Padding(
+              business.tags!.length==0?SizedBox():Padding(
                 padding: EdgeInsets.symmetric(horizontal: Get.width*0.02),
-                child: AutoSizeText("Breakfast, Burgers, Desi Food",style: TextStyles.body1.copyWith(color: Theme.of(context).accentColor),),
+                child: AutoSizeText(business.tags!.map((e) => e.capitalizeFirst).join(', '),overflow: TextOverflow.ellipsis,maxLines: 1,style: TextStyles.body1.copyWith(color: Theme.of(context).accentColor),),
               ),
-              SizedBox(height: Get.height*0.005,),
+              SizedBox(height: business.tags!.length==0?0:Get.height*0.005,),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: Get.width*0.02),
-                child: AutoSizeText(business.status!?"Open Now":"Closed",style: TextStyles.caption.copyWith(color: business.status!?Theme.of(context).buttonColor:Theme.of(context).errorColor),),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                AutoSizeText(business.status!?"Open Now":"Closed",style: TextStyles.caption.copyWith(color: business.status!?Theme.of(context).buttonColor:Theme.of(context).errorColor)),
+
+                    GestureDetector(
+                        onTap: (){
+                          try{
+                            Get.find<LocalStorageService>().launchURL('https://www.google.com/maps/search/?api=1&query=${business.location?.latitude},${business.location?.longitude}');
+                          }
+                          catch(e){
+                            Show.showErrorSnackBar("Error", "$e");
+                          }
+                        },
+                        child:Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              shape: BoxShape.circle
+                          ),
+                          child: Center(child: Icon(Icons.location_on_outlined,color: Theme.of(context).primaryColorLight,),),
+                        )),
+                  ],),
               ),
               SizedBox(height: Get.height*0.01,)
             ],

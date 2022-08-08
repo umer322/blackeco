@@ -8,14 +8,16 @@
   bool? forBusiness;
   String? businessId;
   Map? ids;
+  Map? notifications;
   int? unreadMessagesForUser2;
-  ChatModel({this.ids,this.businessId,this.businessOwnerId,this.forBusiness,this.id,this.lastMessage,this.lastMessageUser,this.lastUpdated,this.unreadMessagesForUser1,this.unreadMessagesForUser2});
+  ChatModel({this.ids,this.businessId,this.businessOwnerId,this.forBusiness,this.id,this.lastMessage,this.lastMessageUser,this.lastUpdated,this.unreadMessagesForUser1,this.unreadMessagesForUser2,this.notifications});
   ChatModel.fromJson(Map data,String id):
       id=id,
       lastUpdated=DateTime.parse(data['last_updated']),
       forBusiness=data['for_business'],
       businessOwnerId=data['business_owner_id'],
       businessId=data['business_id'],
+      notifications=data['notifications'],
       ids=data['ids'],
       lastMessage=data['last_message'],
       lastMessageUser=data['last_message_user'],
@@ -29,6 +31,7 @@
       "for_business":forBusiness,
       "ids":ids,
       "last_message":lastMessage,
+      'notifications':notifications,
       "business_owner_id":businessOwnerId,
       "last_message_user":lastMessageUser,
       "last_unread_1":unreadMessagesForUser1,

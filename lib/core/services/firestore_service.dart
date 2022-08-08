@@ -25,6 +25,8 @@ class FireStoreService extends GetxService {
   }
 
 
+
+
   Future<UserModel?> getUser(String id)async{
     try{
       DocumentSnapshot snapshot=await _userCollection.doc(id).get();
@@ -36,6 +38,10 @@ class FireStoreService extends GetxService {
     catch(e){
       rethrow;
     }
+  }
+
+  Stream<DocumentSnapshot> getUserStream(String userId){
+    return _userCollection.doc(userId).snapshots();
   }
 
   Stream<QuerySnapshot> allReports(){
@@ -79,42 +85,23 @@ class FireStoreService extends GetxService {
     }
   }
 
-  addToFavorite(String businessId,String userID){
+  addFavorite(String id,String userId)async{
     try{
-      DocumentReference documentReference = _businessCollection
-          .doc(businessId);
-      FirebaseFirestore.instance.runTransaction((transaction)async{
-        DocumentSnapshot snapshot = await transaction.get(documentReference);
-
-        if (!snapshot.exists) {
-          throw Exception("Business does not exist!");
-        }
-        transaction.update(documentReference, {'favorites':FieldValue.arrayUnion([userID])});
-      });
+      await _userCollection.doc(userId).update({"favorites":FieldValue.arrayUnion([id])});
     }
     catch(e){
       rethrow;
     }
   }
 
-  removeFromFavorite(String businessId,String userID){
+  removeFavorite(String id,String userId)async{
     try{
-      DocumentReference documentReference = _businessCollection
-          .doc(businessId);
-      FirebaseFirestore.instance.runTransaction((transaction)async{
-        DocumentSnapshot snapshot = await transaction.get(documentReference);
-
-        if (!snapshot.exists) {
-          throw Exception("Business does not exist!");
-        }
-        transaction.update(documentReference, {'favorites':FieldValue.arrayRemove([userID])});
-      });
+      await _userCollection.doc(userId).update({"favorites":FieldValue.arrayRemove([id])});
     }
     catch(e){
       rethrow;
     }
   }
-
   Future saveBusiness(BusinessData data)async{
     try{
       await _businessCollection.add(data.toMap());
@@ -186,8 +173,51 @@ class FireStoreService extends GetxService {
   }
   
   Stream<QuerySnapshot> getUserChats(String id){
-    print(id);
     return _chatCollection.where("ids.$id",isEqualTo: true).snapshots();
+  }
+
+  deleteUserChat(String chatId,String chattingWith,String userId)async{
+    try{
+      await _chatCollection.doc(chatId).delete();
+      final instance=FirebaseFirestore.instance;
+      final batch=instance.batch();
+      final collection=_chatCollection.doc(chatId).collection('messages');
+      var snapshots=await collection.get();
+      for (var doc in snapshots.docs){
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+    }
+    catch(e){
+      rethrow;
+    }
+  }
+
+  updateUserChat(String chatId,String userId,bool type)async{
+    try{
+      await _chatCollection.doc(chatId).update({"notifications.$userId":type});
+    }
+    catch(e){
+      rethrow;
+    }
+  }
+
+  blockUser(String chatId,String userId)async{
+    try{
+      await _chatCollection.doc(chatId).update({"ids.$userId":false});
+    }
+    catch(e){
+      rethrow;
+    }
+  }
+
+  unblockUser(String chatId,String userId)async{
+    try{
+      await _chatCollection.doc(chatId).update({"ids.$userId":true});
+    }
+    catch(e){
+      rethrow;
+    }
   }
 
   updateReport(ReportModel report)async{
@@ -203,6 +233,7 @@ class FireStoreService extends GetxService {
     return _reportCollection.doc(id).collection("messages").snapshots();
   }
 
+
   sendReportMessage(ReportMessageModel message,String reportId)async{
     try{
       await _reportCollection.doc(reportId).collection("messages").add(message.toMap());
@@ -211,5 +242,6 @@ class FireStoreService extends GetxService {
       rethrow;
     }
   }
+
 
 }

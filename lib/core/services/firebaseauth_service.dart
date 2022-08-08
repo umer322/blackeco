@@ -28,5 +28,13 @@ class FireBaseAuthService extends GetxService {
     }
   }
 
+  sendEmail(String email)async{
+    try{
+      await auth.sendPasswordResetEmail(email: email);
+    }
+    catch(e){
+      rethrow;
+    }
+  }
 
 }

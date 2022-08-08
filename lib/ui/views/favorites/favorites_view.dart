@@ -154,14 +154,25 @@ class _BusinessDetailPortion extends StatelessWidget {
                               Show.showErrorSnackBar("Error", "Please login to add this business to your favorites");
                               return;
                             }
-                            if(business.favorites!.contains(Get.find<UserController>().currentUser.value.id)){
-                              Get.find<BusinessesController>().removeFromFavorite(business.id!);
-                            }
-                            else{
-                              Get.find<BusinessesController>().addToFavorite(business.id!);
+                            if (Get.find<UserController>()
+                                .currentUser
+                                .value
+                                .favorites!
+                                .contains(business.id)) {
+                              Get.find<BusinessesController>()
+                                  .removeFromFavorite(business.id!);
+                            } else {
+                              Get.find<BusinessesController>()
+                                  .addToFavorite(business.id!);
                             }
                           },
-                          child: Get.find<UserController>().currentUser.value.id==business.ownerId?SizedBox():CircledIcon(business.favorites!.contains(Get.find<UserController>().currentUser.value.id)?Icons.favorite:Icons.favorite_border,color: Colors.black54,iconColor: Theme.of(context).primaryColorLight,)))
+                          child: Get.find<UserController>().currentUser.value.id==business.ownerId?SizedBox():CircledIcon( Get.find<UserController>()
+        .currentUser
+        .value
+        .favorites!
+        .contains(business.id!)
+    ? Icons.favorite
+        : Icons.favorite_border,color: Colors.black54,iconColor: Theme.of(context).primaryColorLight,)))
                 ])),
             SizedBox(height: 8,),
             Padding(
@@ -197,7 +208,7 @@ class _BusinessDetailPortion extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: AutoSizeText("Breakfast, Burgers, Desi Food",style: TextStyles.body1.copyWith(color: Theme.of(context).accentColor),),
+              child: AutoSizeText(business.tags!.map((e) => e.capitalizeFirst).join(', '),style: TextStyles.body1.copyWith(color: Theme.of(context).accentColor),),
             ),
             AutoSizeText(business.status!?"Open Now":"Closed",style: TextStyles.caption.copyWith(color: business.status!?Theme.of(context).buttonColor:Theme.of(context).errorColor),)
           ],

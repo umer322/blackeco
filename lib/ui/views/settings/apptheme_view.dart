@@ -41,7 +41,7 @@ class AppThemeView extends StatelessWidget {
                 },
                 contentPadding: EdgeInsets.all(0),
                 title: AutoSizeText("System Default"),
-                subtitle: AutoSizeText("Upon Activation,light or dark theme will be selected according to device settings."),
+                subtitle: AutoSizeText("Light or dark theme will be selected according to device settings."),
               ),
             ],
           ),

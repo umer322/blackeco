@@ -4,6 +4,7 @@ import 'package:blackeco/core/controllers/chat_controller.dart';
 import 'package:blackeco/core/services/firebaseauth_service.dart';
 import 'package:blackeco/core/services/firebasestorage_service.dart';
 import 'package:blackeco/core/services/firestore_service.dart';
+import 'package:blackeco/core/services/notification_service.dart';
 import 'package:blackeco/models/report_model.dart';
 import 'package:blackeco/models/user_model.dart';
 import 'package:blackeco/ui/shared/show.dart';
@@ -12,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class UserController extends GetxController{
   Rx<UserModel> currentUser = Rx<UserModel>(UserModel());
@@ -23,12 +25,13 @@ class UserController extends GetxController{
   final facebookLogin = FacebookAuth.instance;
 
   currentUserStream(){
-    authUserSubscription=Get.find<FireBaseAuthService>().fireBaseAuthUserStream().listen((User? event1) {
+    authUserSubscription=Get.find<FireBaseAuthService>().fireBaseAuthUserStream().listen((User? event1)async{
       if(event1!=null){
-        firestoreUserStream = Get.find<FireStoreService>().fireStoreUserStream(event1.uid).listen((event2) {
+        firestoreUserStream = Get.find<FireStoreService>().fireStoreUserStream(event1.uid).listen((event2){
           if(event2.exists){
             try{
               currentUser.value = UserModel.fromJson(Map.from(event2.data() as Map), event2.id);
+              setUserNotificationId();
               if( Get.find<ChatController>().chatsSubscription==null){
                 Get.find<ChatController>().listenToChat(event2.id);
               }
@@ -49,10 +52,29 @@ class UserController extends GetxController{
         });
       }
       else{
-        currentUser.value=UserModel();
+        print(event1);
+        if(currentUser.value.chatToken!=null){
+          await updateUserChatStatus({"chat_token":null});
+        }
+        currentUser.value=UserModel(favorites: []);
+        reportsStream=null;
+        reports.clear();
+        Get.find<ChatController>().chats.clear();
+        Get.find<ChatController>().chatsSubscription=null;
+        Get.find<BusinessesController>().myBusinesses.clear();
       }
       Get.find<BusinessesController>().setOwnerBusiness();
     });
+  }
+
+
+  setUserNotificationId()async{
+    var deviceState = await OneSignal.shared.getDeviceState();
+    if (deviceState == null || deviceState.userId == null)
+      return;
+    if(currentUser.value.chatToken!=deviceState.userId){
+      updateUserChatStatus({"chat_token":deviceState.userId});
+    }
   }
 
   updateUserChatStatus(Map data)async{
@@ -170,6 +192,7 @@ class UserController extends GetxController{
   }
 
   signOut()async{
+    await OneSignal.shared.removeExternalUserId();
     await googleSignIn.signOut();
     await facebookLogin.logOut();
     await FirebaseAuth.instance.signOut();
